@@ -13,3 +13,4 @@ Automated, silent system updates for Windows using `topgrade-rs`. Designed for p
 
 ## Installation
 Run the following command in an **elevated PowerShell terminal**:
+`iex 
