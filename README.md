@@ -1,16 +1,17 @@
-![ASCI Logo](pseudologo_asci.gif)
-                                                                                                          
-⚡ ## MagicTopgrade
+![ASCI Logo](pseudologo_asci.gif)                                                                                            
+## ⚡MagicTopgrade   
 Automated, silent system updates for Windows.
 Designed for power users who want a "set it and forget it" update loop using topgrade-rs. No manual intervention required.<br>
 
-⚠️ ## Critical Warning
+
+ ## ⚠️Critical Warning 
 **<span style="color:red">This script actively fucks system security settings.</span>**
 ```UAC Bypass:``` Temporarily disables User Account Control (ConsentPromptBehaviorAdmin = 0) during execution to prevent update interruptions.
 ```Why?```: This is a deliberate security risk for the sake of convenience. If misconfigured, it leaves your system vulnerable to privilege escalation.
 ```Mitgations```: The script attempts to restore UAC immediately after completion and tells if you it thinks it failed.<br>
 
-## Prerequisites
+
+## Prerequisites 
 | Requirements | Detail |
 | :--- | :--- |
 | OS | `Windows 10/11` |
@@ -18,18 +19,20 @@ Designed for power users who want a "set it and forget it" update loop using top
 | Dependency | `topgrade` installed via `winget` — Duh. |
 | Config | A valid `topgrade.toml` located in `%APPDATA%` |<br>
 
-🚀 **Installation**
+
+## 🚀Installation
 Run this command in an elevated PowerShell terminal:
-```iwr https://s.kizuati.com/magictopgrade_inst | iex```
-🛑 **Uninstallation**
+```iwr https://s.kizuati.com/magictopgrade_inst | iex```<br>
+## 🛑Uninstallation
 To remove the scheduled task and all associated files:
 ```iwr https://s.kizuati.com/magictopgrade_inst | iex -Uninstall```<br>
 
 
-**Configuration**
+## Configuration 
 No configuration exists beyond what's natively available in topgrade.
 Edit your topgrade.toml at %APPDATA%\topgrade.toml to customize update behavior.<br>
-**Troubleshooting**
+
+## Troubleshooting 
 ```Config not found``` ->	```Ensure topgrade.toml exists in %APPDATA%.```
 ```Task not running``` -> ```Check Event Viewer > Windows Logs > Application for PowerShell errors.```
 ```UAC stuck at 0```	 -> ```Manually reset via reg add HKLM\...\System /v ConsentPromptBehaviorAdmin /t REG_DWORD /d 3 /f```<br>
