@@ -11,6 +11,9 @@ Automated, silent system updates for Windows using `topgrade-rs`. Designed for p
 - **Topgrade installed:** `winget install topgrade-rs.topgrade`
 - **Configuration:** A valid `topgrade.toml` in `%APPDATA%`
 
-## Installation
+## Installing
 Run the following command in an **elevated PowerShell terminal**:
-`iex 
+`iwr https://s.kizuati.com/magictopgrade_inst | iex`
+## Uninstalling
+Run the following command in an **elevated PowerShell terminal**:
+`iwr https://s.kizuati.com/magictopgrade_inst | iex -Uninstall`
