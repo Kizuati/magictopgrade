@@ -18,15 +18,16 @@ Write-Host @"
 Write-Host "Starting MAGICTOPGRADE Update Script..." -ForegroundColor "Yellow"
 Write-Host "Running as User: $env:USERNAME" -ForegroundColor "Gray"
 
+# --- Non-interactive guard ---
+$interactive = $Host.Name -match "ConsoleHost"
+
 # --- Admin Check ---
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $isAdmin = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if (-not $isAdmin) {
     Write-Host "ERROR: Must run as Administrator." -ForegroundColor "Red"
-    Write-Host "Press Enter to exit..." -ForegroundColor "Gray"
-    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-    exit 1
+    if ($interactive) { Read-Host "Press Enter to exit"; exit 1 } else { exit 1 }
 }
 
 # --- UAC Variables ---
@@ -50,35 +51,31 @@ try {
         }
     } catch {
         Write-Host "[✗] CRITICAL: Failed to access UAC registry. $_" -ForegroundColor "Red"
-        Write-Host "Press Enter to exit..." -ForegroundColor "Gray"
-        $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-        exit 1
+        if ($interactive) { Read-Host "Press Enter to exit"; exit 1 } else { exit 1 }
     }
 
-    # 2. Resolve Config Path (Dynamic)
+    # 2. Resolve Config Path
     $configPath = Join-Path $env:APPDATA "topgrade.toml"
     if (-not (Test-Path $configPath)) {
         Write-Host "[✗] ERROR: Config not found at $configPath" -ForegroundColor "Red"
         Write-Host "Create a topgrade.toml in %APPDATA%." -ForegroundColor "Gray"
-        Write-Host "Press Enter to exit..." -ForegroundColor "Gray"
-        $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-        exit 1
+        if ($interactive) { Read-Host "Press Enter to exit"; exit 1 } else { exit 1 }
     }
 
-    # 3. Resolve Topgrade Binary (Dynamic)
+    # 3. Resolve Topgrade Binary
     $topgradeExe = $null
     
-    # Try PATH first
     $cmdInfo = Get-Command topgrade.exe -ErrorAction SilentlyContinue
     if ($cmdInfo) {
         $topgradeExe = $cmdInfo.Source
     } else {
-        # Fallback: Scan WinGet Packages directory
         $pkgDir = Join-Path $env:LOCALAPPDATA "Microsoft\WinGet\Packages"
         if (Test-Path $pkgDir) {
+            # Recurse into subdirs — exe may not be at package root
             $found = Get-ChildItem $pkgDir -Directory -Filter "*topgrade*" -ErrorAction SilentlyContinue | Select-Object -First 1
             if ($found) {
-                $topgradeExe = Join-Path $found.FullName "topgrade.exe"
+                $exe = Get-ChildItem $found.FullName -Filter "topgrade.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+                if ($exe) { $topgradeExe = $exe.FullName }
             }
         }
     }
@@ -86,9 +83,7 @@ try {
     if (-not $topgradeExe -or -not (Test-Path $topgradeExe)) {
         Write-Host "[✗] ERROR: topgrade.exe not found in PATH or WinGet packages." -ForegroundColor "Red"
         Write-Host "Install via: winget install topgrade-rs.topgrade" -ForegroundColor "Gray"
-        Write-Host "Press Enter to exit..." -ForegroundColor "Gray"
-        $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-        exit 1
+        if ($interactive) { Read-Host "Press Enter to exit"; exit 1 } else { exit 1 }
     }
 
     # 4. Run Topgrade
@@ -109,8 +104,6 @@ try {
     }
 
 } finally {
-    # --- GUARANTEED CLEANUP ---
-    # This block runs NO MATTER WHAT (error, crash, or success)
     if ($null -ne $origUAC -and $origUAC -ne 0) {
         Write-Host "[!] Restoring UAC..." -ForegroundColor "Yellow"
         try {
@@ -128,5 +121,6 @@ Write-Host "========================================" -ForegroundColor "Green"
 Write-Host "       MAGICTOPGRADE FINISHED" -ForegroundColor "Green"
 Write-Host "========================================" -ForegroundColor "Green"
 Write-Host ""
-Write-Host "Press Enter to close window..." -ForegroundColor "Gray"
-$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+if ($interactive) {
+    Read-Host "Press Enter to close window"
+}

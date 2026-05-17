@@ -1,4 +1,5 @@
-﻿# MagicTopgrade Task Setup
+﻿
+# MagicTopgrade Task Setup
 param(
     [string]$ScriptPath = "C:\MagicTopgrade.ps1",
     [string]$TaskName = "MAGICTOPGRADE"
@@ -15,30 +16,31 @@ if (-not (Test-Path $ScriptPath)) {
     exit 1
 }
 
-schtasks /Delete /TN $TaskName /F 2>$null
+Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false 2>$null
 
 Write-Host "[+] Creating scheduled task: $TaskName" -ForegroundColor Cyan
 
-$createResult = schtasks /Create /TN $TaskName /RU "BUILTIN\Administrators" /RL HIGHEST /SC ONLOGON /TR "powershell.exe -ExecutionPolicy Bypass -File `"$ScriptPath`"" /F 2>&1
+$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"$ScriptPath`""
+$Trigger = New-ScheduledTaskTrigger -AtLogOn
+$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest -LogonType Interactive
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "[✗] ERROR: Failed to create task." -ForegroundColor Red
-    Write-Host $createResult -ForegroundColor DarkGray
+try {
+    Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Principal $Principal -Force | Out-Null
+    Write-Host "[✓] Task created successfully." -ForegroundColor Green
+    Write-Host "    Trigger: At logon (as $env:USERNAME, elevated)" -ForegroundColor DarkGray
+    Write-Host "    Script:  $ScriptPath" -ForegroundColor DarkGray
+} catch {
+    Write-Host "[✗] ERROR: Failed to create task: $_" -ForegroundColor Red
     exit 1
 }
 
-Write-Host "[✓] Task created successfully." -ForegroundColor Green
-Write-Host '    Trigger: At logon (any Administrator)' -ForegroundColor DarkGray
-Write-Host "    Script:  $ScriptPath" -ForegroundColor DarkGray
 Write-Host ''
-
 Write-Host "[>] Running task now as test..." -ForegroundColor Yellow
 Write-Host "----------------------------------------" -ForegroundColor DarkGray
 
-schtasks /Run /TN $TaskName
+Start-ScheduledTask -TaskName $TaskName
 
-Write-Host "----------------------------------------" -ForegroundColor DarkGray
+Write-Host "----------------------------------------" -ForegroundColor "DarkGray"
 Write-Host "[✓] Task triggered. Check for the MAGICTOPGRADE window." -ForegroundColor Green
 Write-Host ''
-Write-Host "Press Enter to close..." -ForegroundColor Gray
-$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+Read-Host "Press Enter to close"
