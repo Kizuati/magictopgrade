@@ -8,7 +8,7 @@ If you want a set and forget update experience with as many Windows things as po
  ## ⚠️Critical Warning 
 **🚨This script actively fucks system security settings.** <br>
 ```UAC Bypass:``` Temporarily disables User Account Control (ConsentPromptBehaviorAdmin = 0) during execution to prevent update interruptions.<br>
-```Why?```: This is a deliberate security risk for the sake of convenience. If misconfigured, it leaves your system vulnerable to privilege escalation.<br>
+```Why?```: This is a deliberate security risk for the sake of convenience. If you want to skip constant UAC prompts, this is the price..<br>
 ```Mitigations```: The script attempts to restore UAC immediately after completion and tells if you it thinks it failed.<br><br>
 
 ## 🐉 Here Be Dragons
