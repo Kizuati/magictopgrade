@@ -54,24 +54,34 @@ try {
         if ($interactive) { Read-Host "Press Enter to exit"; exit 1 } else { exit 1 }
     }
 
-    # 2. Resolve Config Path
-    $configPath = Join-Path $env:APPDATA "topgrade.toml"
-    if (-not (Test-Path $configPath)) {
-        Write-Host "[✗] ERROR: Config not found at $configPath" -ForegroundColor "Red"
-        Write-Host "Create a topgrade.toml in %APPDATA%." -ForegroundColor "Gray"
+    # 2. Resolve Config Path (Multiple locations)
+    $configPaths = @(
+        (Join-Path $env:APPDATA "topgrade.toml"),
+        (Join-Path $PSScriptRoot "topgrade.toml"),
+        (Join-Path $env:USERPROFILE "topgrade.toml")
+    )
+    $configPath = $configPaths | Where-Object { Test-Path $_ } | Select-Object -First 1
+    
+    if (-not $configPath) {
+        Write-Host "[✗] ERROR: Config not found. Checked:" -ForegroundColor "Red"
+        $configPaths | ForEach-Object { Write-Host "    $_" -ForegroundColor "Gray" }
         if ($interactive) { Read-Host "Press Enter to exit"; exit 1 } else { exit 1 }
     }
+    Write-Host "[+] Using config: $configPath" -ForegroundColor "DarkGray"
 
-    # 3. Resolve Topgrade Binary
+    # 3. Resolve Topgrade Binary (Multiple methods)
     $topgradeExe = $null
     
+    # Method 1: PATH
     $cmdInfo = Get-Command topgrade.exe -ErrorAction SilentlyContinue
     if ($cmdInfo) {
         $topgradeExe = $cmdInfo.Source
-    } else {
+    }
+    
+    # Method 2: Winget packages
+    if (-not $topgradeExe) {
         $pkgDir = Join-Path $env:LOCALAPPDATA "Microsoft\WinGet\Packages"
         if (Test-Path $pkgDir) {
-            # Recurse into subdirs — exe may not be at package root
             $found = Get-ChildItem $pkgDir -Directory -Filter "*topgrade*" -ErrorAction SilentlyContinue | Select-Object -First 1
             if ($found) {
                 $exe = Get-ChildItem $found.FullName -Filter "topgrade.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -79,16 +89,22 @@ try {
             }
         }
     }
+    
+    # Method 3: Scoop
+    if (-not $topgradeExe) {
+        $scoopApps = Join-Path $env:USERPROFILE "scoop\apps\topgrade\current"
+        $scoopExe = Join-Path $scoopApps "topgrade.exe"
+        if (Test-Path $scoopExe) { $topgradeExe = $scoopExe }
+    }
 
     if (-not $topgradeExe -or -not (Test-Path $topgradeExe)) {
-        Write-Host "[✗] ERROR: topgrade.exe not found in PATH or WinGet packages." -ForegroundColor "Red"
+        Write-Host "[✗] ERROR: topgrade.exe not found." -ForegroundColor "Red"
         Write-Host "Install via: winget install topgrade-rs.topgrade" -ForegroundColor "Gray"
         if ($interactive) { Read-Host "Press Enter to exit"; exit 1 } else { exit 1 }
     }
 
     # 4. Run Topgrade
     Write-Host "[>] Running MAGICTOPGRADE..." -ForegroundColor "Cyan"
-    Write-Host "Config: $configPath" -ForegroundColor "DarkGray"
     Write-Host "Binary: $topgradeExe" -ForegroundColor "DarkGray"
     Write-Host "----------------------------------------" -ForegroundColor "DarkGray"
 
@@ -122,5 +138,5 @@ Write-Host "       MAGICTOPGRADE FINISHED" -ForegroundColor "Green"
 Write-Host "========================================" -ForegroundColor "Green"
 Write-Host ""
 if ($interactive) {
-    Read-Host "Press Enter to close window"
+    Read-Host "Press Enter to close"
 }
