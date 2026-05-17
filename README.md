@@ -1,7 +1,7 @@
 ![ASCI Logo](pseudologo_asci.gif)                                                                                            
 ## ⚡MagicTopgrade   
 A simple powershell script that runs on top of Topgrade, the popular update package available for MacOS,Linux and Windows. 
-Obviously, this being powershell, we're on Windows. The script simply yells at powertop to ignore all warnings and install everything fully-unattended.
+Obviously, this being powershell, we're on Windows. The script simply yells at topgrade to ignore all warnings and install everything fully-unattended.
 It also automatically adds running topgrade in this mode to your Task Scheduler, so it runs on every log on. 
 If you want a set and forget update experience with as many Windows things as possible, this would be it.
 
