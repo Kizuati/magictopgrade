@@ -1,9 +1,9 @@
 # ⚡ MagicTopgrade
 Automated, silent system updates for Windows using `topgrade-rs`. Designed for power users who want a "set it and forget it" update loop without manual intervention.
 
-## ⚠️ Critical Warning
-**This script modifies system security settings.**
-- **UAC Modification:** Temporarily disables UAC prompts (`ConsentPromptBehaviorAdmin = 0`) during execution to prevent update interruptions. If this gets fucked up, very sad. This is the cost of convenience.
+## ⚠️ Warning
+**This script fuckie-wuckies system security settings.**
+- **UAC Bypass:** Temporarily disables UAC prompts (`ConsentPromptBehaviorAdmin = 0`) during execution to prevent update interruptions. If this gets fucked up, very sad. This is the cost of convenience.
 - 
 ## Prerequisites
 - **Windows 10/11**
