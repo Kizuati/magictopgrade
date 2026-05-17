@@ -22,10 +22,12 @@ Designed for power users who want a "set it and forget it" update loop using top
 
 ## 🚀Installation
 Run this command in an elevated PowerShell terminal:
-```iwr https://s.kizuati.com/magictopgrade_inst | iex```<br>
+```iwr https://s.kizuati.com/magictopgrade_inst | iex```
+<br>
 ## 🛑Uninstallation
 To remove the scheduled task and all associated files:
-```iwr https://s.kizuati.com/magictopgrade_inst | iex -Uninstall```<br>
+```iwr https://s.kizuati.com/magictopgrade_inst | iex -Uninstall```
+<br>
 
 
 ## Configuration 
