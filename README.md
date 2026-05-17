@@ -1,8 +1,9 @@
 ![ASCI Logo](pseudologo_asci.gif)                                                                                            
 ## ⚡MagicTopgrade   
-Automated, silent system updates for Windows. Designed for power users who want a "set it and forget it" update loop using topgrade-rs. No manual intervention required.<br>
-You obviously need Topgrade for this to work and actually update things.
-
+A simple powershell script that runs on top of Topgrade, the popular update package available for MacOS,Linux and Windows. 
+Obviously, this being powershell, we're on Windows. The script simply yells at powertop to ignore all warnings and install everything fully-unattended.
+It also automatically adds running topgrade in this mode to your Task Scheduler, so it runs on every log on. 
+If you want a set and forget update experience with as many Windows things as possible, this would be it.
 
  ## ⚠️Critical Warning 
 **🚨This script actively fucks system security settings.** <br>
