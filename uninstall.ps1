@@ -7,7 +7,7 @@ $TaskName = "MAGICTOPGRADE"
 # Admin Check
 $admin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $admin) {
-    Write-Host "[✗] Run as Administrator." -ForegroundColor Red
+    Write-Host "[X] Run as Administrator." -ForegroundColor Red
     Read-Host "Press Enter to exit"
     exit 1
 }
@@ -44,19 +44,19 @@ Write-Host "[>] Uninstalling..." -ForegroundColor Yellow
 # Remove Task
 if ($task) {
     Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false 2>$null
-    Write-Host "[✓] Task removed." -ForegroundColor Green
+    Write-Host "[OK] Task removed." -ForegroundColor Green
 }
 
 # Remove Files
 if ($fileExists) {
     Remove-Item $ScriptPath -Force
-    Write-Host "[✓] Script removed." -ForegroundColor Green
+    Write-Host "[OK] Script removed." -ForegroundColor Green
 }
 if ($taskFileExists) {
     Remove-Item $TaskScriptPath -Force
-    Write-Host "[✓] Task script removed." -ForegroundColor Green
+    Write-Host "[OK] Task script removed." -ForegroundColor Green
 }
 
 Write-Host ""
-Write-Host "[✓] Uninstallation complete." -ForegroundColor Green
+Write-Host "[OK] Uninstallation complete." -ForegroundColor Green
 Read-Host "Press Enter to close"
