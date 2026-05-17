@@ -1,4 +1,4 @@
-![logo](./pseudologo_asci.png)
+
                                                                                                           
 ⚡ **MagicTopgrade**
 Automated, silent system updates for Windows.
