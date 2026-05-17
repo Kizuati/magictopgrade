@@ -32,12 +32,12 @@ This should work for most people and most windows installs. But it might not. <b
 
 Run this command in an **elevated PowerShell terminal**:
 ```powershell
-iwr https://s.kizuati.com/magictopgrade_inst | iex powershell
+iwr https://s.kizuati.com/magictopgrade_inst | iex
 ```
 🛑 Uninstallation
 To remove the scheduled task and all associated files:
 ```powershell
-iwr https://s.kizuati.com/magictopgrade_inst | iex -Uninstall 
+iwr https://s.kizuati.com/magictopgrade_uninst | iex
 ```
 ## Configuration 
 No configuration exists beyond what's natively available in topgrade.
