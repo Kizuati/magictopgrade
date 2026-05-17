@@ -11,6 +11,12 @@ If you want a set and forget update experience with as many Windows things as po
 ```Why?```: This is a deliberate security risk for the sake of convenience. If misconfigured, it leaves your system vulnerable to privilege escalation.<br>
 ```Mitigations```: The script attempts to restore UAC immediately after completion and tells if you it thinks it failed.<br><br>
 
+## 🐉 Here Be Dragons
+** 🚨 MagicTopgrade is beta "software". Issues and just not working are to be expected.**
+After tinkering a while with topgrade, I realized that I wanted to have something like this, and eventually got it working.
+Post using it, I realized I might as well publish it for usage for everyone and after some adaptation and vibe coding (Eugh, I know) - it's here.
+This should work for most people and most windows installs. But it might not. 
+
 
 ## Prerequisites 
 | Requirements | Detail |
