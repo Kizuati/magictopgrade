@@ -35,10 +35,13 @@ iwr https://s.kizuati.com/magictopgrade_inst | iex -Uninstall
 No configuration exists beyond what's natively available in topgrade.
 Edit your topgrade.toml at %APPDATA%\topgrade.toml to customize update behavior.<br>
 
-## Troubleshooting 
-```Config not found``` ->	```Ensure topgrade.toml exists in %APPDATA%.```
-```Task not running``` -> ```Check Event Viewer > Windows Logs > Application for PowerShell errors.```
-```UAC stuck at 0```	 -> ```Manually reset via reg add HKLM\...\System /v ConsentPromptBehaviorAdmin /t REG_DWORD /d 3 /f```<br>
+## Troubleshooting
+| Issue | Solution |
+| :--- | :--- |
+| `Config not found` | Ensure `topgrade.toml` exists in `%APPDATA%`. |
+| `Task not running` | Check **Event Viewer** > **Windows Logs** > **Application** for PowerShell errors. |
+| `UAC stuck at 0` | Manually reset via:<br>`reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorAdmin /t REG_DWORD /d 3 /f` |
+<br>
 
 **🚨Use at your own risk. It's not my fault if the Iranian-Russian viruses kill you without your UAC condoms🚨**
 
