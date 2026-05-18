@@ -5,6 +5,9 @@ Obviously, this being powershell, we're on Windows. The script simply yells at t
 It also automatically adds running topgrade in this mode to your Task Scheduler, so it runs on every log on. 
 If you want a set and forget update experience with as many Windows things as possible, this would be it.
 
+## Demo Video
+[![Demo Video](https://img.youtube.com/vi/_-JKUOH8Yj8/hqdefault.jpg)](https://www.youtube.com/watch?v=_-JKUOH8Yj)
+
  ## ⚠️Critical Warning 
 **🚨This script actively fucks system security settings.** <br>
 ```UAC Bypass:``` Temporarily disables User Account Control (ConsentPromptBehaviorAdmin = 0) during execution to prevent update interruptions.<br>
