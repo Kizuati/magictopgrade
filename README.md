@@ -6,7 +6,7 @@ It also automatically adds running topgrade in this mode to your Task Scheduler,
 If you want a set and forget update experience with as many Windows things as possible, this would be it.
 
 ## Demo Video
-[![Watch the video](./pseudologo_asci.gif)](https://www.youtube.com/watch?v=_-JKUOH8Yj8)
+[![Watch the video](./magictopgrade-main.png)](https://www.youtube.com/watch?v=_-JKUOH8Yj8)
 
  ## ⚠️Critical Warning 
 **🚨This script actively fucks system security settings.** <br>
